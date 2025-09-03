@@ -2,9 +2,9 @@ volumes:
   pgdatasource:
 
 services:
-  test-db:
+  db:
     image: postgres
-    container_name: test_db
+    container_name: company-db
     restart: always
     environment:
       - DATABASE_HOST=127.0.0.1
@@ -24,12 +24,12 @@ services:
     volumes:
       - pgdatasource:/var/lib/postgresql/data
 
-  test-api:
+  api:
     build: api/
-    container_name: test-api
+    container_name: company-api
     # restart: always
     depends_on:
-      test-db:
+      db:
         condition: service_healthy
     ports:
       - "8080:8080"
@@ -37,7 +37,7 @@ services:
       - app-network
     environment:
       - NODE_ENV=development
-      - DATABASE_HOST=test_db
+      - DATABASE_HOST=company-db
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=docker
       - POSTGRES_PORT=5432
@@ -47,25 +47,25 @@ services:
     #     source: ./api
     #     target: /api
 
-  test-ui:
+  ui:
     build: ui/
     tty: true
-    container_name: test-ui
+    container_name: company-ui
     environment:
       - FAST_REFRESH=false
     depends_on:
-      - "test-api"
+      - "api"
     ports:
       - "3000:3000"
     networks:
       - app-network
 
     # Uncomment for hot reload
-    volumes:
-      - type: bind
-        source: ./ui
-        target: /app
-      - /app/node_modules
+    # volumes:
+    #   - type: bind
+    #     source: ./app
+    #     target: /app
+    #   - /app/node_modules
 
 networks:
   app-network:

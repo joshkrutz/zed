@@ -2,15 +2,15 @@
 FROM node:alpine
 
 # Set and create the working directory for this app
-WORKDIR /api
+WORKDIR /app
 
 # Copy this application's files from the current directory to the filesystem
 # of the container at /app
-COPY . /api
+COPY . /app
 
 # Make the container accept traffic on port 3000 at runtime from other
 # containers or the host if also published
-EXPOSE 8080
+EXPOSE 3000
 
 # Run this shell command at build time
 RUN npm install
