@@ -25,7 +25,7 @@ export function Product() {
   const [description, setDescription] = useState("");
   const [quantity, setQuantity] = useState(1);
 
-  const navigator = useNavigate();
+  const navigate = useNavigate();
 
   const {
     data: item,
@@ -40,9 +40,9 @@ export function Product() {
     setIsAuthorized(item && authUser && authUser.id === item.manager_id);
 
     if (!isLoading) {
-      setTitle(item.title);
-      setDescription(item.description);
-      setQuantity(item.quantity);
+      setTitle(item?.title);
+      setDescription(item?.description);
+      setQuantity(item?.quantity);
     }
 
     setEditing(false);
@@ -50,7 +50,7 @@ export function Product() {
 
   if (isLoading) return <>Loading...</>;
 
-  if (error) return <>{error.message}</>;
+  if (error) return <>404: Could not locate the product at this page</>;
 
   return (
     <>
@@ -82,7 +82,7 @@ export function Product() {
                   fetch(`/api/products/${item_id}`, {
                     method: "DELETE",
                     credentials: "include",
-                  }).then(() => navigator("/dashboard"));
+                  }).then(() => navigate("/dashboard"));
                 }}
               >
                 Delete

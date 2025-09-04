@@ -3,27 +3,24 @@
 ## Installation
 
 ```
-docker compose build
 docker compose up
 ```
 
 ## Functions
-- See the supply chain for a fake end product
-- See the fake companies that are a part of the supply chain for said product
-- Tree structure for suply chain visuals
-- Light-mode and dark-mode toggles
-- Smart routing, with clear messaging for endpoints that do not exist
 
-![Example demo](./demo.gif)
+- See all products that Company Name produces!
+- If you are a manager, you can add, edit, and delete your products.
+- Anyone can register as a manager!
+- Only registered users can make products.
+- Only product owners can edit and delete their own products.
 
 # Technologies:
+
 - Postgres, Express, React and Node
 
 ## Stretch Goals:
-- Support graphs/cycles
-- Add risks to supply chains
-- Animations change based on rate of delivery
-- Images on the nodes
-- Search bar for home page
-- Page for suppliers/supplementary products not just final products
-- History of transactions displayed
+
+- Enable searching on galleries
+- Delete user accounts
+- Master manager can delete other managers accounts/products
+- Tag products if they are related (i.e. both cars)

@@ -3,25 +3,7 @@ import { Gallery } from "../components/Gallery";
 import { useAuth } from "../components/AuthProvider";
 import { useState } from "react";
 import { Toolbar } from "../components/Toolbar";
-import useSWR from "swr";
-import { Navigate, useNavigate } from "react-router-dom";
-
-const items2 = [
-  {
-    name: "Test",
-    description: "Test description",
-    quantity: 10,
-    id: "1234-1234",
-  },
-  {
-    name: "Test2",
-    description: "Test2 description",
-    quantity: 11,
-    id: "1234-12334",
-  },
-];
-
-// const items = []
+import { useNavigate } from "react-router-dom";
 
 export function Dashboard() {
   const { authUser } = useAuth();
