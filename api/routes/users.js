@@ -50,7 +50,7 @@ router.post("/", (req, res) => {
         };
 
         // Save details
-        knex("users")
+        return knex("users")
           .insert(newRecord)
           .then(() => res.send(newRecord))
           .catch((err) =>

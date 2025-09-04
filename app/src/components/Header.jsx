@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Login } from "./Login";
 import { useEffect } from "react";
 import { useAuth } from "./AuthProvider";
@@ -8,6 +8,7 @@ export function Header() {
   const [showLoginModal, setLoginModal] = useState(false);
 
   const { authUser, setAuthUser } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <div className="h-fit">
@@ -39,7 +40,6 @@ export function Header() {
                 }).then((res) => {
                   if (res.ok) {
                     setAuthUser(null);
-                    setLoggedIn(false);
                   }
                 });
               } catch (err) {

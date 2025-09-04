@@ -1,6 +1,7 @@
 const express = require("express");
 const userRoutes = require("./routes/users");
-const authRoutes = require("./routes/auth");
+const { router: authRoutes } = require("./routes/auth");
+const productRoutes = require("./routes/products");
 const cookieSession = require("cookie-session");
 
 const app = express();
@@ -32,6 +33,7 @@ app.use(
 
 app.use("/api/users", userRoutes);
 app.use("/api/sessions", authRoutes);
+app.use("/api/products", productRoutes);
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}...`);

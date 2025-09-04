@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import { useAuth } from "../components/AuthProvider";
+import useSWR from "swr";
 
 const item = {
   name: "Test",
@@ -18,10 +19,38 @@ export function Product() {
   const item_id = useParams().id;
   const [editing, setEditing] = useState(false);
   const { authUser } = useAuth();
+  const [isAuthorizedToEdit, setIsAuthorized] = useState(false);
+
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [quantity, setQuantity] = useState(1);
+
+  const navigator = useNavigate();
+
+  const {
+    data: item,
+    isLoading,
+    error,
+    mutate,
+  } = useSWR(`/api/products/${item_id}`, (url) =>
+    fetch(url).then((res) => res.json())
+  );
 
   useEffect(() => {
+    setIsAuthorized(item && authUser && authUser.id === item.manager_id);
+
+    if (!isLoading) {
+      setTitle(item.title);
+      setDescription(item.description);
+      setQuantity(item.quantity);
+    }
+
     setEditing(false);
-  }, [authUser]);
+  }, [authUser, isLoading]);
+
+  if (isLoading) return <>Loading...</>;
+
+  if (error) return <>{error.message}</>;
 
   return (
     <>
@@ -30,7 +59,7 @@ export function Product() {
           <div className="flex flex-col select-none justify-center items-start max-w-[500px] gap-4">
             <div className="flex gap-2 flex-wrap">
               <p className="font-bold">Name:</p>
-              <p id="name">{item.name}</p>
+              <p id="name">{item.title}</p>
             </div>
             <div className="flex gap-2 flex-wrap">
               <p className="font-bold">ID:</p>
@@ -38,21 +67,36 @@ export function Product() {
             </div>
             <div className="flex gap-2 flex-wrap">
               <p className="font-bold">Description:</p>
-              <p>{item.description}</p>
+              <p className="break-all">{item.description}</p>
             </div>
             <div className="flex gap-2 flex-wrap">
               <p className="font-bold">Quantity:</p>
               <p>{item.quantity}</p>
             </div>
-            <Button
-              disabled={!authUser}
-              className="w-full"
-              onClick={() => {
-                setEditing((prev) => true);
-              }}
-            >
-              Edit
-            </Button>
+            <div className="flex w-full gap-2">
+              <Button
+                disabled={!authUser || !isAuthorizedToEdit}
+                type="destructive"
+                className="flex-1"
+                onClick={() => {
+                  fetch(`/api/products/${item_id}`, {
+                    method: "DELETE",
+                    credentials: "include",
+                  }).then(() => navigator("/dashboard"));
+                }}
+              >
+                Delete
+              </Button>
+              <Button
+                disabled={!authUser || !isAuthorizedToEdit}
+                className="flex-1"
+                onClick={() => {
+                  setEditing((prev) => true);
+                }}
+              >
+                Edit
+              </Button>
+            </div>
           </div>
         </div>
       )}
@@ -67,7 +111,10 @@ export function Product() {
                 autoFocus
                 className="flex-1"
                 id="product_name"
-                defaultValue={item.name}
+                value={title}
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                }}
               />
             </div>
             <div className="flex gap-2 flex-wrap items-center w-full">
@@ -86,9 +133,13 @@ export function Product() {
                 Description:
               </label>
               <Input
+                variant="textarea"
                 className="w-full"
                 id="description"
-                defaultValue={item.description}
+                value={description}
+                onChange={(e) => {
+                  setDescription(e.target.value);
+                }}
               />
             </div>
             <div className="flex gap-2 flex-wrap items-center w-full">
@@ -99,7 +150,10 @@ export function Product() {
                 className="flex-1"
                 id="quantity"
                 type="number"
-                defaultValue={item.quantity}
+                value={quantity}
+                onChange={(e) => {
+                  setQuantity(e.target.value);
+                }}
               />
             </div>
             <div className="w-full flex justify-evenly">
@@ -111,7 +165,26 @@ export function Product() {
               >
                 Cancel
               </Button>
-              <Button>Save</Button>
+              <Button
+                onClick={() => {
+                  fetch(`/api/products/${item_id}`, {
+                    method: "PATCH",
+                    body: JSON.stringify({
+                      title: title,
+                      description: description,
+                      quantity: quantity,
+                    }),
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                  }).then(() => {
+                    setEditing(false);
+                    mutate(`/api/products/${item_id}`);
+                  });
+                }}
+              >
+                Save
+              </Button>
             </div>
           </div>
         </div>

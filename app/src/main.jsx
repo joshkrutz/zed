@@ -7,6 +7,8 @@ import { Layout } from "./pages/Layout.jsx";
 import { NoPage } from "./pages/NoPage.jsx";
 import { AuthProvider } from "./components/AuthProvider.jsx";
 import { Product } from "./pages/Product.jsx";
+import { Dashboard } from "./pages/Dashboard.jsx";
+import { CreateProduct } from "./pages/CreateProduct.jsx";
 
 export default function App() {
   return (
@@ -15,6 +17,8 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="*" element={<NoPage />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="product/" element={<CreateProduct />} />
           <Route path="product/:id" element={<Product />} />
         </Route>
       </Routes>

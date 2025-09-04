@@ -41,4 +41,8 @@ router.delete("/", (req, res) => {
   res.sendStatus(200);
 });
 
-module.exports = router;
+function isAuthorized(req, res) {
+  return req.session && req.session.id;
+}
+
+module.exports = { router, isAuthorized };

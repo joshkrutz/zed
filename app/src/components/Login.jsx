@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useRef } from "react";
 import { useState } from "react";
 import { useAuth } from "./AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 export function Login({ isVisible, closeModal }) {
   const [accountStage, setAccountStage] = useState("login");
@@ -64,6 +65,7 @@ export function Login({ isVisible, closeModal }) {
   function LoginForm({ swapView }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
       e.preventDefault();
@@ -107,6 +109,7 @@ export function Login({ isVisible, closeModal }) {
 
           const json = await userDat.json();
           setAuthUser(json);
+          navigate("/dashboard");
           closeModal();
         } catch (err) {
           setError(err.message);
@@ -334,10 +337,10 @@ export function Login({ isVisible, closeModal }) {
   }
 
   return (
-    <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center">
+    <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center z-1">
       <div
         ref={modalRef}
-        className="bg-white min-w-[500px] h-fit rounded-3xl drop-shadow-2xl flex flex-col justify-center items-center p-6"
+        className="bg-white min-w-[500px] h-fit rounded-3xl drop-shadow-[0_0_200px_rgba(0,0,0,1)] flex flex-col justify-center items-center p-6"
       >
         <h1 className="font-bold text-2xl gap-2 mb-6">
           {accountStage === "login" ? "Login" : "Create an Account"}

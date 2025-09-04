@@ -11,6 +11,9 @@
   --color: rgba(255, 255, 255, 0.87);
 
   --destructive: #f6ddde;
+  --destructive-red: #bb060c;
+  --destructive-red-hover: #ad070c;
+
   --accent1: #0d6fff;
   --accent1-hover: #0b5ed9;
   --accent2: #f7b801;
@@ -48,6 +51,8 @@ body,
   --font-sans: var(--font-open-sans);
   --font-pixel: var(--font-jersey-10);
   --color-destructive: var(--destructive);
+  --color-destructive-red: var(--destructive-red);
+  --color-destructive-red-hover: var(--destructive-red-hover);
   --color-accent1: var(--accent1);
   --color-accent1-hover: var(--accent1-hover);
   --color-accent1B: var(--accent1B);
