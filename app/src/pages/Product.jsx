@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Input from "../components/Input";
 import Button from "../components/Button";
+import { useAuth } from "../components/AuthProvider";
 
 const item = {
   name: "Test",
@@ -16,8 +17,11 @@ const item = {
 export function Product() {
   const item_id = useParams().id;
   const [editing, setEditing] = useState(false);
+  const { authUser } = useAuth();
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setEditing(false);
+  }, [authUser]);
 
   return (
     <>
@@ -25,30 +29,23 @@ export function Product() {
         <div className="flex justify-center flex-col items-center gap-8">
           <div className="flex flex-col select-none justify-center items-start max-w-[500px] gap-4">
             <div className="flex gap-2 flex-wrap">
-              <label htmlFor="name" className="font-bold">
-                Name:
-              </label>
-              <h1 id="name">{item.name}</h1>
+              <p className="font-bold">Name:</p>
+              <p id="name">{item.name}</p>
             </div>
             <div className="flex gap-2 flex-wrap">
-              <label htmlFor="id" className="font-bold">
-                ID:
-              </label>
-              <h2>{item.id}</h2>
+              <p className="font-bold">ID:</p>
+              <p>{item.id}</p>
             </div>
             <div className="flex gap-2 flex-wrap">
-              <label htmlFor="description" className="font-bold">
-                Description:
-              </label>
+              <p className="font-bold">Description:</p>
               <p>{item.description}</p>
             </div>
             <div className="flex gap-2 flex-wrap">
-              <label htmlFor="Quantity" className="font-bold">
-                Quantity:
-              </label>
+              <p className="font-bold">Quantity:</p>
               <p>{item.quantity}</p>
             </div>
             <Button
+              disabled={!authUser}
               className="w-full"
               onClick={() => {
                 setEditing((prev) => true);
@@ -63,13 +60,13 @@ export function Product() {
         <div className="flex justify-center flex-col items-center gap-8">
           <div className="flex flex-col select-none justify-center items-start max-w-[500px] gap-4">
             <div className="flex gap-2 flex-wrap items-center w-full">
-              <label htmlFor="name" className="font-bold">
+              <label htmlFor="product_name" className="font-bold">
                 Name:
               </label>
               <Input
                 autoFocus
                 className="flex-1"
-                id="name"
+                id="product_name"
                 defaultValue={item.name}
               />
             </div>

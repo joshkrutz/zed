@@ -6,9 +6,9 @@ const initialState = {
   toggleTheme: () => null,
 };
 
-const ThemeProviderContext = createContext(initialState);
+const AuthProviderContext = createContext(initialState);
 
-export function ThemeProvider({
+export function AuthProvider({
   children,
   defaultTheme = "system",
   storageKey = "vite-ui-theme",
@@ -17,6 +17,8 @@ export function ThemeProvider({
   const [theme, setThemeState] = useState(
     () => localStorage.getItem(storageKey) || defaultTheme
   );
+
+  const [authUser, setAuthUser] = useState(null);
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -49,20 +51,22 @@ export function ThemeProvider({
       localStorage.setItem(storageKey, newTheme);
       setThemeState(newTheme);
     },
+    authUser,
+    setAuthUser: setAuthUser,
   };
 
   return (
-    <ThemeProviderContext.Provider {...props} value={value}>
+    <AuthProviderContext.Provider {...props} value={value}>
       {children}
-    </ThemeProviderContext.Provider>
+    </AuthProviderContext.Provider>
   );
 }
 
-export const useTheme = () => {
-  const context = useContext(ThemeProviderContext);
+export const useAuth = () => {
+  const context = useContext(AuthProviderContext);
 
   if (context === undefined)
-    throw new Error("useTheme must be used within a ThemeProvider");
+    throw new Error("useAuth must be used within a AuthProvider");
 
   return context;
 };

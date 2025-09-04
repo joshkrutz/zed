@@ -29,11 +29,22 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+html,
+body,
+#root {
+  display: flex;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-background-accent: var(--background-accent);
   --color-background-accent-darker: var(--background-accent-darker);
   --color-foreground: var(--foreground);
+  --color-foreground-light: var(--foreground-light);
   --font-sans: var(--font-open-sans);
   --font-pixel: var(--font-jersey-10);
   --color-destructive: var(--destructive);

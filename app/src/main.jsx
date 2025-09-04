@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Home } from "./pages/Home.jsx";
 import { Layout } from "./pages/Layout.jsx";
 import { NoPage } from "./pages/NoPage.jsx";
-import { ThemeProvider } from "./components/ThemeProvider.jsx";
+import { AuthProvider } from "./components/AuthProvider.jsx";
 import { Product } from "./pages/Product.jsx";
 
 export default function App() {
@@ -24,8 +24,8 @@ export default function App() {
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <AuthProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <App />
-    </ThemeProvider>
+    </AuthProvider>
   </StrictMode>
 );

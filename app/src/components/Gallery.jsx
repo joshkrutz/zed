@@ -8,7 +8,7 @@ export function Gallery({ data }) {
         data.map((item, index) => (
           <Tile key={`item-${item.id}-${index}`} data={item} />
         ))}
-      {!showGalleryTiles && <p>No matching items.</p>}
+      {!showGalleryTiles && <p>There are no products to display.</p>}
     </div>
   );
 }

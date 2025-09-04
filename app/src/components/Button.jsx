@@ -12,7 +12,7 @@ export default function Button({ children, type, className, ...props }) {
 
   return (
     <button
-      className={`cursor-pointer p-2 pl-8 pr-8 bg-accent1 hover:bg-accent1-hover text-white rounded-xl  ${className}`}
+      className={`disabled:cursor-not-allowed disabled:bg-gray-300 cursor-pointer p-2 pl-8 pr-8 bg-accent1 hover:bg-accent1-hover text-white rounded-xl  ${className}`}
       {...props}
     >
       {...children}

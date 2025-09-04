@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { useRef } from "react";
 import { useState } from "react";
+import { useAuth } from "./AuthProvider";
 
-export function Login({ isVisible, closeModal, setLoggedIn }) {
+export function Login({ isVisible, closeModal }) {
   const [accountStage, setAccountStage] = useState("login");
   const [data, setData] = useState();
   const [error, setError] = useState();
@@ -13,6 +14,8 @@ export function Login({ isVisible, closeModal, setLoggedIn }) {
       closeModal();
     }
   };
+
+  const { setAuthUser } = useAuth();
 
   useEffect(() => {
     if (isVisible) {
@@ -81,24 +84,33 @@ export function Login({ isVisible, closeModal, setLoggedIn }) {
             password: password,
           });
 
-          console.log(payload);
-
           setIsLoading(true);
-          await fetch("/api/sessions", {
+          const res = await fetch("/api/sessions", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             credentials: "include",
             body: payload,
-          }).then((res) => {
-            if (res.ok) {
-              closeModal();
-              setLoggedIn(true);
-            }
           });
+
+          if (!res.ok) {
+            throw new Error("Server error");
+          }
+
+          const userDat = await fetch("/api/users/me", {
+            method: "GET",
+            credentials: "include",
+          });
+
+          if (!userDat.ok) throw new Error(userDat.error);
+
+          const json = await userDat.json();
+          setAuthUser(json);
+          closeModal();
         } catch (err) {
           setError(err.message);
+          setAuthUser(null);
         } finally {
           setIsLoading(false);
         }
