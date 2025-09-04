@@ -1,11 +1,27 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+
+  --background: #0b141c;
+  --foreground: #1c2f41;
+  --foregroundAccent: #31506e;
+  --color: rgba(255, 255, 255, 0.87);
+
+  --destructive: #f6ddde;
+  --accent1: #0d6fff;
+  --accent1-hover: #0b5ed9;
+  --accent2: #f7b801;
+
+  --color-light: #000000;
+  --background-light: #ffffff;
+  --foreground-light: #e6e6e6;
+  --foregroundAccent-light: #c6c6c6;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: var(--color);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -13,23 +29,22 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+@theme inline {
+  --color-background: var(--background);
+  --color-background-accent: var(--background-accent);
+  --color-background-accent-darker: var(--background-accent-darker);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-open-sans);
+  --font-pixel: var(--font-jersey-10);
+  --color-destructive: var(--destructive);
+  --color-accent1: var(--accent1);
+  --color-accent1-hover: var(--accent1-hover);
+  --color-accent1B: var(--accent1B);
 }
 
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
     background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
   }
 }

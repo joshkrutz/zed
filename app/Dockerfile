@@ -16,4 +16,4 @@ EXPOSE 3000
 RUN npm install
 
 # Start the application
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]

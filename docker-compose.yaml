@@ -11,7 +11,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=docker
       - POSTGRES_PORT=5432
-      - POSTGRES_DB=test
+      - POSTGRES_DB=company
     ports:
       - "5432:5432"
     networks:
@@ -32,7 +32,7 @@ services:
       db:
         condition: service_healthy
     ports:
-      - "8080:8080"
+      - "8080"
     networks:
       - app-network
     environment:
@@ -41,14 +41,15 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=docker
       - POSTGRES_PORT=5432
-      - POSTGRES_DB=test
+      - POSTGRES_DB=company
+      - SESSION_KEY=reallycoolneatosecret
     # volumes:
     #   - type: bind
     #     source: ./api
     #     target: /api
 
   ui:
-    build: ui/
+    build: app/
     tty: true
     container_name: company-ui
     environment:
@@ -59,13 +60,12 @@ services:
       - "3000:3000"
     networks:
       - app-network
-
     # Uncomment for hot reload
-    # volumes:
-    #   - type: bind
-    #     source: ./app
-    #     target: /app
-    #   - /app/node_modules
+    volumes:
+      - type: bind
+        source: ./app
+        target: /app
+      - /app/node_modules
 
 networks:
   app-network:
